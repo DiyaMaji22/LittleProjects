@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genshin Impact Archons Carousel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Savate&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Hand+Pre:wght@400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Savate', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .font-savate {
+      font-family: 'Savate', sans-serif;
+    }
+    
+    .font-edu {
+      font-family: 'Edu VIC WA NT Hand Pre', cursive;
+    }
+    
+    .font-abril {
+      font-family: 'Abril Fatface', serif;
+    }
+    
+    /* Header styles */
+    header {
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(127, 255, 212, 0.2);
+    }
+    
+    nav {
+      display: flex;
+      gap: 40px;
+    }
+    
+    nav a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 1.1rem;
+      position: relative;
+      padding: 5px 0;
+      transition: all 0.3s ease;
+      font-family: 'Edu VIC WA NT Hand Pre', cursive;
+    }
+    
+    nav a:hover {
+      color: #7FFFD4;
+    }
+    
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #7FFFD4;
+      transition: width 0.3s ease;
+    }
+    
+    nav a:hover::after {
+      width: 100%;
+    }
+    
+    /* Carousel container */
+    .carousel {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      margin-top: -50px;
+    }
+    
+    /* List of items */
+    .list {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+    
+    .items {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      transition: transform 0.8s ease, opacity 0.8s ease;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    
+    .items.active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 10;
+    }
+    
+    .items img {
+      width: 50%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+    }
+    
+    .content {
+      width: 50%;
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .author {
+      font-family: 'Savate', sans-serif;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 5px;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+    
+    .title {
+      font-family: 'Edu VIC WA NT Hand Pre', cursive;
+      font-size: 4rem;
+      line-height: 1;
+      margin-bottom: 10px;
+      color: white;
+      font-weight: 700;
+    }
+    
+    .topic {
+      font-family: 'Edu VIC WA NT Hand Pre', cursive;
+      font-size: 3rem;
+      color: #7FFFD4;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
+    .desc {
+      font-family: 'Edu VIC WA NT Hand Pre', cursive;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      margin-bottom: 30px;
+      padding: 15px;
+      background: rgba(127, 255, 212, 0.1);
+      border-radius: 10px;
+      border-left: 3px solid #7FFFD4;
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .buttons button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      font-family: 'Savate', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #7FFFD4;
+      color: #16213e;
+    }
+    
+    .buttons button:hover {
+      background: #5fdfb4;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(127, 255, 212, 0.4);
+    }
+    
+    /* Thumbnail navigation */
+    .thumbnail {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      z-index: 100;
+    }
+    
+    .thumbnail .items {
+      width: 120px;
+      height: 170px;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+      border: 2px solid transparent;
+    }
+    
+    .thumbnail .items:hover {
+      opacity: 1;
+      transform: translateY(-5px);
+    }
+    
+    .thumbnail .items.active {
+      opacity: 1;
+      border: 2px solid #7FFFD4;
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 5px 15px rgba(127, 255, 212, 0.4);
+    }
+    
+    .thumbnail .items img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      clip-path: none;
+    }
+    
+    .thumbnail .items .content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 8px;
+      font-family: 'Edu VIC WA NT Hand Pre', cursive;
+      width: 100%;
+      padding: 5px;
+    }
+    
+    .thumbnail .items .content .title {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    
+    .thumbnail .items .content .desc {
+      font-size: 0.7rem;
+      margin: 0;
+      padding: 0;
+      background: none;
+      border: none;
+    }
+    
+    /* Arrow navigation */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.7);
+      border: 2px solid #7FFFD4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: all 0.3s ease;
+      color: #7FFFD4;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .arrow:hover {
+      background: #7FFFD4;
+      color: #16213e;
+    }
+    
+    #prev {
+      left: 20px;
+    }
+    
+    #next {
+      right: 20px;
+    }
+    
+    /* Element indicators */
+    .element-indicators {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 20;
+    }
+    
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .indicator.active {
+      background: #7FFFD4;
+      transform: scale(1.3);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 992px) {
+      .items img {
+        width: 45%;
+      }
+      
+      .content {
+        width: 55%;
+        padding: 0 30px;
+      }
+      
+      .title {
+        font-size: 3rem;
+      }
+      
+      .topic {
+        font-size: 2.5rem;
+      }
+      
+      .thumbnail .items {
+        width: 100px;
+        height: 140px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+      }
+      
+      nav {
+        gap: 20px;
+      }
+      
+      .items {
+        flex-direction: column;
+      }
+      
+      .items img {
+        width: 100%;
+        height: 45%;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+      }
+      
+      .content {
+        width: 100%;
+        height: 55%;
+        padding: 20px;
+      }
+      
+      .title {
+        font-size: 2.5rem;
+      }
+      
+      .topic {
+        font-size: 2rem;
+      }
+      
+      .desc {
+        font-size: 1rem;
+        padding: 10px;
+      }
+      
+      .buttons button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      
+      .arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .thumbnail {
+        bottom: 30px;
+      }
+      
+      .thumbnail .items {
+        width: 80px;
+        height: 110px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      nav a {
+        font-size: 0.9rem;
+      }
+      
+      .content {
+        padding: 15px;
+      }
+      
+      .title {
+        font-size: 2rem;
+      }
+      
+      .topic {
+        font-size: 1.8rem;
+      }
+      
+      .thumbnail {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Archons</a>
+      <a href="#">Regions</a>
+      <a href="#">Lore</a>
+      <a href="#">About</a>
+    </nav>
+  </header>
+  
+  <div class="carousel"> 
+    <div class="list">
+      <!-- Venti -->
+      <div class="items active" id="id1">
+        <img src="https://i.ibb.co/0Z5cB7b/venti.png" alt="Venti">
+        <div class="content">
+          <div class="tracking-[5px] text-[20px] font-savate author">Miku</div>
+          <div class="text-[5em] font-edu title">Tevyat Diaries</div>
+          <div class="text-[3em] text-[#7FFFD4] font-edu font-medium topic">Venti</div>
+          <div class="text-[1.2em] font-edu text-[#7FFFD4] leading-relaxed tracking-wide mt-4 px-6 bg-opacity-20 rounded-lg desc">
+            Venti is the Anemo Archon who rules through the absence of rule—a wind god who shaped Mondstadt's landscape yet appears as a carefree bard. His divine essence embodies pure freedom, flowing like an eternal breeze that carries songs and dreams while refusing to govern his people directly.
+          </div>
+          <div class="flex mt-[20px] buttons">
+            <button class="h-[40px] text-black text-[15px] text-center text-savate font-semibold bg-blue-200 rounded-full w-[100px] hover:bg-gradient-to-r hover:from-blue-300 ">Read Story</button>
+            <button class="h-[40px] text-[#7FFFD4] text-[15px] text-center text-savate font-semibold bg-transparent border-2 border-[#7FFFD4] rounded-full w-[120px] ml-4 hover:bg-[#7FFFD4] hover:text-[#0f172a]">View Abilities</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Zhongli -->
+      <div class="items" id="id2">
+        <img src="https://i.ibb.co/3rQ0ZcM/zhongli.jpg" alt="Zhongli">
+        <div class="content">
+          <div class="tracking-[5px] text-[20px] font-savate author">Miku</div>
+          <div class="text-[5em] font-edu title">Tevyat Diaries</div>
+          <div class="text-[3em] text-[#7FFFD4] font-edu font-medium topic">Zhongli</div>
+          <div class="text-[1.2em] font-edu text-[#7FFFD4] leading-relaxed tracking-wide mt-4 px-6 bg-opacity-20 rounded-lg desc">
+            Zhongli, known as Morax and Rex Lapis, is the Geo Archon who has guided Liyue for over 6,000 years. He values contracts above all else and possesses unparalleled knowledge of history and geology. After retiring from his role as Archon, he now lives as the mortal consultant Zhongli.
+          </div>
+          <div class="flex mt-[20px] buttons">
+            <button class="h-[40px] text-black text-[15px] text-center text-savate font-semibold bg-blue-200 rounded-full w-[100px] hover:bg-gradient-to-r hover:from-blue-300 ">Read Story</button>
+            <button class="h-[40px] text-[#7FFFD4] text-[15px] text-center text-savate font-semibold bg-transparent border-2 border-[#7FFFD4] rounded-full w-[120px] ml-4 hover:bg-[#7FFFD4] hover:text-[#0f172a]">View Abilities</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Raiden Shogun -->
+      <div class="items" id="id3">
+        <img src="https://i.ibb.co/xYfQ3bH/raiden.png" alt="Raiden Shogun">
+        <div class="content">
+          <div class="tracking-[5px] text-[20px] font-savate author">Miku</div>
+          <div class="text-[5em] font-edu title">Tevyat Diaries</div>
+          <div class="text-[3em] text-[#7FFFD4] font-edu font-medium topic">Raiden Shogun</div>
+          <div class="text-[1.2em] font-edu text-[#7FFFD4] leading-relaxed tracking-wide mt-4 px-6 bg-opacity-20 rounded-lg desc">
+            The Raiden Shogun is the awesome and terrible power of thunder incarnate, the exalted ruler of the Inazuma Shogunate. She is a puppet created by Ei to carry out her will of eternity. Ei herself exists within the Plane of Euthymia, meditating endlessly.
+          </div>
+          <div class="flex mt-[20px] buttons">
+            <button class="h-[40px] text-black text-[15px] text-center text-savate font-semibold bg-blue-200 rounded-full w-[100px] hover:bg-gradient-to-r hover:from-blue-300 ">Read Story</button>
+            <button class="h-[40px] text-[#7FFFD4] text-[15px] text-center text-savate font-semibold bg-transparent border-2 border-[#7FFFD4] rounded-full w-[120px] ml-4 hover:bg-[#7FFFD4] hover:text-[#0f172a]">View Abilities</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Nahida -->
+      <div class="items" id="id4">
+        <img src="https://i.ibb.co/0mF1yHh/nahida.jpg" alt="Nahida">
+        <div class="content">
+          <div class="tracking-[5px] text-[20px] font-savate author">Miku</div>
+          <div class="text-[5em] font-edu title">Tevyat Diaries</div>
+          <div class="text-[3em] text-[#7FFFD4] font-edu font-medium topic">Nahida</div>
+          <div class="text-[1.2em] font-edu text-[#7FFFD4] leading-relaxed tracking-wide mt-4 px-6 bg-opacity-20 rounded-lg desc">
+            Lesser Lord Kusanali, also known as Nahida, is the current Dendro Archon of Sumeru. Despite her youthful appearance, she possesses ancient wisdom. As the God of Wisdom, Nahida values knowledge deeply and strives to guide her people toward enlightenment.
+          </div>
+          <div class="flex mt-[20px] buttons">
+            <button class="h-[40px] text-black text-[15px] text-center text-savate font-semibold bg-blue-200 rounded-full w-[100px] hover:bg-gradient-to-r hover:from-blue-300 ">Read Story</button>
+            <button class="h-[40px] text-[#7FFFD4] text-[15px] text-center text-savate font-semibold bg-transparent border-2 border-[#7FFFD4] rounded-full w-[120px] ml-4 hover:bg-[#7FFFD4] hover:text-[#0f172a]">View Abilities</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Furina -->
+      <div class="items" id="id5">
+        <img src="https://i.ibb.co/GdFvQ9P/furina.jpg" alt="Furina">
+        <div class="content">
+          <div class="tracking-[5px] text-[20px] font-savate author">Miku</div>
+          <div class="text-[5em] font-edu title">Tevyat Diaries</div>
+          <div class="text-[3em] text-[#7FFFD4] font-edu font-medium topic">Furina</div>
+          <div class="text-[1.2em] font-edu text-[#7FFFD4] leading-relaxed tracking-wide mt-4 px-6 bg-opacity-20 rounded-lg desc">
+            Furina, also known as Focalors, is the Hydro Archon who reigns over the court of Fontaine. She embodies the concept of justice and is known for her dramatic flair and love for theatrical performances. Beneath her flamboyant exterior lies a deep sense of responsibility.
+          </div>
+          <div class="flex mt-[20px] buttons">
+            <button class="h-[40px] text-black text-[15px] text-center text-savate font-semibold bg-blue-200 rounded-full w-[100px] hover:bg-gradient-to-r hover:from-blue-300 ">Read Story</button>
+            <button class="h-[40px] text-[#7FFFD4] text-[15px] text-center text-savate font-semibold bg-transparent border-2 border-[#7FFFD4] rounded-full w-[120px] ml-4 hover:bg-[#7FFFD4] hover:text-[#0f172a]">View Abilities</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Thumbnail navigation -->
+    <div class="thumbnail">
+      <div class="items active" id="t1">
+        <img src="https://i.ibb.co/0Z5cB7b/venti.png" alt="Venti">
+        <div class="content">
+          <div class="title">Venti</div>
+          <div class="desc">Anemo Archon</div>
+        </div>
+      </div>
+      <div class="items" id="t2">
+        <img src="https://i.ibb.co/3rQ0ZcM/zhongli.jpg" alt="Zhongli">
+        <div class="content">
+          <div class="title">Zhongli</div>
+          <div class="desc">Geo Archon</div>
+        </div>
+      </div>
+      <div class="items" id="t3">
+        <img src="https://i.ibb.co/xYfQ3bH/raiden.png" alt="Raiden Shogun">
+        <div class="content">
+          <div class="title">Raiden</div>
+          <div class="desc">Electro Archon</div>
+        </div>
+      </div>
+      <div class="items" id="t4">
+        <img src="https://i.ibb.co/0mF1yHh/nahida.jpg" alt="Nahida">
+        <div class="content">
+          <div class="title">Nahida</div>
+          <div class="desc">Dendro Archon</div>
+        </div>
+      </div>
+      <div class="items" id="t5">
+        <img src="https://i.ibb.co/GdFvQ9P/furina.jpg" alt="Furina">
+        <div class="content">
+          <div class="title">Furina</div>
+          <div class="desc">Hydro Archon</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Arrow navigation -->
+    <div class="arrow">
+      <button id="prev">‹</button>
+      <button id="next">›</button>
+    </div>
+    
+    <!-- Element indicators -->
+    <div class="element-indicators">
+      <div class="indicator active" data-index="0"></div>
+      <div class="indicator" data-index="1"></div>
+      <div class="indicator" data-index="2"></div>
+      <div class="indicator" data-index="3"></div>
+      <div class="indicator" data-index="4"></div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const items = document.querySelectorAll('.list .items');
+      const thumbnails = document.querySelectorAll('.thumbnail .items');
+      const indicators = document.querySelectorAll('.indicator');
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+      
+      let currentIndex = 0;
+      const totalItems = items.length;
+      
+      // Function to update carousel
+      function updateCarousel(index) {
+        // Update main items
+        items.forEach((item, i) => {
+          if (i === index) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+        
+        // Update thumbnails
+        thumbnails.forEach((thumb, i) => {
+          if (i === index) {
+            thumb.classList.add('active');
+          } else {
+            thumb.classList.remove('active');
+          }
+        });
+        
+        // Update indicators
+        indicators.forEach((indicator, i) => {
+          if (i === index) {
+            indicator.classList.add('active');
+          } else {
+            indicator.classList.remove('active');
+          }
+        });
+        
+        currentIndex = index;
+      }
+      
+      // Navigation functions
+      function nextSlide() {
+        let newIndex = (currentIndex + 1) % totalItems;
+        updateCarousel(newIndex);
+      }
+      
+      function prevSlide() {
+        let newIndex = (currentIndex - 1 + totalItems) % totalItems;
+        updateCarousel(newIndex);
+      }
+      
+      // Event listeners
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+      
+      // Thumbnail click
+      thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          const index = Array.from(thumbnails).indexOf(thumb);
+          updateCarousel(index);
+        });
+      });
+      
+      // Indicator click
+      indicators.forEach(indicator => {
+        indicator.addEventListener('click', () => {
+          const index = parseInt(indicator.getAttribute('data-index'));
+          updateCarousel(index);
+        });
+      });
+      
+      // Auto slide every 8 seconds
+      setInterval(nextSlide, 8000);
+    });
+  </script>
+</body>
+</html>

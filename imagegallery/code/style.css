@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Hand+Pre:wght@400..700&display=swap');
+body
+{
+    font-family:Savate;
+    background-color:black;
+    color:white;
+    margin:0;
+    font-size:12px;
+}
+a{
+    text-decoration: none;
+}
+header{
+    width: 1140px;
+    max-width:80%;
+    margin:auto;
+    height:50px;
+    display:flex;
+    align-items:center;
+    position:relative;
+    z-index:100;
+}
+header a{
+    margin-right: 40px;
+}
+.carousel
+{
+    width: 100vw;
+    height:100vh;
+    overflow:hidden;
+    margin-top: -50px;
+    position:relative;
+     
+}
+.carousel .list .items
+{
+    position:absolute;
+    inset: 0 0 0 0;
+}
+.carousel .list .items img{
+    width: 100%;
+    height:100%;
+    object-fit:cover;
+    
+}
+.carousel .list .items .content{
+    position:absolute;
+    top: 20%;
+    width:1140px;
+    max-width:80%;
+    left:50%;
+    transform: translateX(-50%);
+    padding-right: 30%;
+    color:white;
+    z-index:20;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.thumbnail
+{
+    position:absolute;
+    bottom:150px;
+    left:50%;
+    width:max-content;
+    z-index: 100;
+    display:flex;
+    gap:20px;
+}
+.thumbnail .items
+{
+    width:150px;
+    height:220px;
+    flex-shrink: 0;
+    position:relative;
+
+}
+.thumbnail .items img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:20px;
+
+}
+.arrow
+{
+    position:absolute;
+    top:70%;
+    right:52%;
+    width:300px;
+    max-width:30%;
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+.arrow button{
+    height:40px;
+    width:40px;
+    border-radius: 50%;
+    background-color:#eee4;
+    border:none;
+    color: black;
+    font-family:monospace;
+    font-weight:bold;
+    font-size:large;
+    transition: .5s;
+    z-index:100;
+    
+}
+.arrow button:hover{
+
+    background-color:white;
+}
+.carousel .list .items:nth-child(1)
+{
+    z-index:1;
+}
+.carousel .list .items:nth-child(1) .author,
+.carousel .list .items:nth-child(1) .title,
+.carousel .list .items:nth-child(1) .topic,
+.carousel .list .items:nth-child(1) .desc,
+.carousel .list .items:nth-child(1) .buttons
+{
+    transform:translateY(50px);
+    filter:blur(20px);
+    opacity:0;
+    animation:showContent 0.5s 1s linear 1 forwards;
+}
+@keyframes showContent
+{
+   to{
+    opacity:1;
+    filter:blur(0);
+    transform: translateY(0);
+   }
+}
+.carousel .list .items:nth-child(1) .title
+{
+    animation-delay: 1.2s;
+}
+.carousel .list .items:nth-child(1) .topic{
+    animation-delay:1.4s;
+}
+.carousel .list .items:nth-child(1) .desc{
+    animation-delay: 1.6s;
+}
+.carousel .list .items:nth-child(1) .buttons
+{
+    animation-delay:1.8s;
+}
+
+
+
+
+
+
+ 
