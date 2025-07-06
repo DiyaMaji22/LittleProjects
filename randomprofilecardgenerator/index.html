@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Savate">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Hand+Pre:wght@400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .font-savate {
+            font-family: 'Savate', sans-serif;
+        }
+
+        .font-abril {
+            font-family: 'Abril Fatface', serif;
+        }
+
+        .font-edu {
+            font-family: 'Edu VIC WA NT Hand Pre', cursive;
+        }
+    </style>
+</head>
+<!-- Random Profile Card Generator -->
+<h1 class="text-3xl font-bold text-[#232946] mb-8 font-edu text-center">
+    Random Profile Card Generator
+</h1>
+<body class="min-h-screen flex flex-col items-center justify-center bg-[#f5f8ee] py-8">
+    <div class="w-[370px] rounded-[40px] shadow-2xl bg-white overflow-hidden relative">
+        <!-- Top gradient header with wave -->
+        <div class="relative h-48 rounded-b-[40px] overflow-hidden bg-gradient-to-br from-[#c471f5] to-[#fa71cd] flex items-center justify-center">
+            <!-- SVG Wave -->
+            <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 370 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 20 Q92.5 40 185 20 T370 20 V40 H0 V20Z" fill="#fff" opacity="0.8"/>
+                <path d="M0 30 Q92.5 50 185 30 T370 30 V40 H0 V30Z" fill="#eebbc3" opacity="0.5"/>
+                <path d="M0 35 Q92.5 55 185 35 T370 35 V40 H0 V35Z" fill="#b8c1ec" opacity="0.3"/>
+            </svg>
+            <!-- Profile Image -->
+            <div class="absolute left-1/2 top-[70%] -translate-x-1/2 -translate-y-1/2 z-10">
+                <img id="picture" src="" alt="Profile Picture" class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover bg-[#eebbc3]" />
+            </div>
+        </div>
+        <!-- Card Content -->
+        <div class="pt-20 pb-8 px-6 flex flex-col items-center">
+            <div id="follow" class="text-center text-lg font-semibold text-[#232946] mb-4"></div>
+            <div class="flex justify-center space-x-4 mb-6 text-[#393e6e] text-xl">
+                
+            </div>
+            <p class="text-[#393e6e] text-sm text-center mb-2">
+                Discover random GitHub users and explore their profiles with a single click!
+            </p>
+            <p class="text-[#b8c1ec] text-xs text-center italic">
+                Creative by <a href="https://github.com/DiyaMaji22">Diya Maji</a>.
+            </p>
+        </div>
+    </div>
+    <div class="flex justify-center mt-6">
+        <button id="nextBtn" class="bg-gradient-to-r from-[#eebbc3] to-[#b8c1ec] text-[#232946] font-bold px-6 py-2 rounded-xl shadow-md transition-all duration-300">Next User</button>
+    </div>
+    <!-- Font Awesome for icons (optional, can remove if not needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</body>
+<script>
+
+    const avatar = document.getElementById('picture');
+    const follow = document.getElementById('follow');
+    const next = document.getElementById('nextBtn');
+    function trytofinduser() {
+        const randomid = Math.floor(Math.random() * 300000);
+        const token = 'your token here';
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `https://api.github.com/users?since=${randomid}&per_page=1`);
+        xhr.setRequestHeader('Authorization', 'token ' + token);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const data = JSON.parse(this.responseText);
+                console.log(data);
+                if (data.length > 0) {
+                    const username = data[0].login;
+                    const pictureurl = data[0].avatar_url;
+                    avatar.src = pictureurl;
+
+                    const details = new XMLHttpRequest();
+                    details.open('GET', `https://api.github.com/users/${username}`);
+                    details.setRequestHeader('Authorization','token '+token);
+                    details.onreadystatechange=function()
+                    {
+                        if(details.readyState===4 && details.status===200)
+                    {
+                        const userdetails=JSON.parse(details.responseText);
+                        console.log(userdetails);
+                        follow.innerHTML=`${userdetails.login}
+                        <p>Followers:${userdetails.followers}</p>
+                        <p>Following:${userdetails.following}</p>`;
+                    }
+                    }
+                    
+
+                details.send();
+
+                } else {
+                    console.log('No user of this id');
+                    trytofinduser();
+                }
+
+            }
+            else if (xhr.readyState === 4 && xhr.status === 403) {
+                follow.innerHTML = 'Rate limit reached.Wait for 1 hour';
+            }
+    
+
+        }
+        xhr.send();
+        
+    }
+    next.addEventListener('click', trytofinduser);
+    trytofinduser(); 
+</script>
+
+</html>
