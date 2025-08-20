@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeMate - Find Your Next Favorite Anime</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Hand+Pre:wght@400..700&family=Lora:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1d1a32;
+      --secondary: #2a2749;
+      --accent: #ff6b6b;
+      --text: #f8f9fa;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--primary) 0%, #151225 100%);
+      min-height: 100vh;
+      font-family: 'Lora', serif;
+      color: var(--text);
+    }
+
+    .font-savate {
+      font-family: 'Savate', sans-serif;
+    }
+
+    .font-abril {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-edu {
+      font-family: 'Edu VIC WA NT Hand Pre', cursive;
+    }
+
+    .anime-card {
+      background: linear-gradient(to bottom right, var(--secondary) 0%, #1e1b3a 100%);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .anime-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .search-btn {
+      background: linear-gradient(to right, #ff6b6b, #ff8e8e);
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    }
+
+    .rating-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .smooth-transition {
+      transition: all 0.3s ease;
+    }
+
+    .loader {
+      border-top-color: var(--accent);
+      animation: spinner 0.8s linear infinite;
+    }
+
+    @keyframes spinner {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: rgba(255, 107, 107, 0.3);
+      z-index: -1;
+      transform: skewX(-15deg);
+    }
+
+    .no-results {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .placeholder-poster {
+      background: linear-gradient(45deg, #2a2749 0%, #3a3769 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.2);
+      font-size: 3rem;
+    }
+
+    .anime-poster {
+      border: 2px solid rgba(255, 107, 107, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .anime-poster:hover {
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    .search-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-container:focus-within {
+      transform: translateY(-2px);
+    }
+
+    .search-container:focus-within .search-btn {
+      box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .search-input {
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3);
+    }
+
+    .search-suggestion:hover {
+      background: #3a3769;
+      transform: translateY(-2px);
+    }
+
+    .tag {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.2);
+    }
+    
+    .type-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 107, 107, 0.9);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen py-8 px-4 sm:px-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <header class="w-full flex flex-col md:flex-row justify-between items-center py-6 mb-8">
+      <div class="flex items-center mb-6 md:mb-0">
+        <div class="font-abril text-4xl md:text-5xl text-pink-500 mr-3">AnimeMate</div>
+        <i class="fas fa-dragon text-pink-500 text-3xl"></i>
+      </div>
+
+      <div class="w-full md:w-[40%] search-container">
+        <div class="flex">
+          <input
+            class="search-input border-2 border-pink-500/30 bg-[#2a2749] w-full text-gray-200 text-lg px-6 py-3 rounded-l-2xl shadow-lg focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors"
+            id="title" placeholder="Search for anime by title..." autocomplete="off">
+          <button class="search-btn px-6 py-3 rounded-r-2xl font-bold text-gray-900 flex items-center" id="search">
+            <i class="fas fa-search mr-2"></i> Search
+          </button>
+        </div>
+        <p class="text-gray-400 text-sm mt-2 ml-2">Try "Attack on Titan", "Naruto", or "One Piece"</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="anime-card p-6 md:p-8 fade-in" id="animeContainer">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Anime Poster -->
+        <div class="w-full lg:w-[35%] flex justify-center">
+          <div class="w-full max-w-sm relative">
+            <div class="anime-poster aspect-[2/3] placeholder-poster" id="imageContainer">
+              <i class="fas fa-dragon"></i>
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 text-center">
+                <p class="text-pink-500 font-semibold" id="posterTitle">Anime Title</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anime Details -->
+        <div class="w-full lg:w-[65%]">
+          <div class="mb-6">
+            <h1 class="text-4xl md:text-5xl font-abril text-white mb-2" id="animename">Find Your Next Favorite Anime</h1>
+            <div class="flex flex-wrap items-center gap-4 mb-4">
+              <div class="flex items-center text-gray-300 tag px-3 py-1 rounded-full">
+                <i class="fas fa-calendar-alt mr-2 text-pink-500"></i>
+                <span id="year">-</span>
+              </div>
+              <div class="flex items-center text-gray-300 tag px-3 py-1 rounded-full">
+                <i class="fas fa-clock mr-2 text-pink-500"></i>
+                <span id="duration">- min/ep</span>
+              </div>
+              <div class="flex items-center text-gray-300 tag px-3 py-1 rounded-full">
+                <i class="fas fa-play-circle mr-2 text-pink-500"></i>
+                <span id="episodes">- episodes</span>
+              </div>
+              <div class="flex items-center text-gray-300 tag px-3 py-1 rounded-full">
+                <i class="fas fa-tags mr-2 text-pink-500"></i>
+                <span id="genre">-</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 mb-6">
+              <div class="bg-pink-500/10 px-4 py-1 rounded-full text-pink-300 border border-pink-500/30">
+                <i class="fas fa-star mr-1"></i>
+                <span id="score">-</span>/10
+              </div>
+              <div class="text-gray-400 italic" id="status">-</div>
+            </div>
+
+            <div class="mb-6">
+              <h2 class="text-xl font-semibold text-pink-500 mb-3">Synopsis</h2>
+              <p class="text-gray-300 leading-relaxed" id="desc">Search for an anime to see its description here.
+                Discover ratings, studio information, and more!</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h3 class="text-xl font-semibold text-pink-500 mb-3 flex items-center">
+                <i class="fas fa-user-alt mr-2"></i> Director
+              </h3>
+              <p class="text-gray-300" id="director">-</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-pink-500 mb-3 flex items-center">
+                <i class="fas fa-building mr-2"></i> Studio
+              </h3>
+              <p class="text-gray-300" id="studio">-</p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-6 mb-8">
+            <div class="flex items-center">
+              <div class="rating-circle bg-pink-500 text-gray-900 mr-3">
+                <span id="scoreCircle">-</span>
+              </div>
+              <div>
+                <p class="font-medium text-white">Anime Score</p>
+                <p class="text-gray-400 text-sm">Community rating</p>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <div class="rating-circle bg-purple-600 text-white mr-3">
+                <span id="rankCircle">-</span>
+              </div>
+              <div>
+                <p class="font-medium text-white">Popularity Rank</p>
+                <p class="text-gray-400 text-sm">Based on popularity</p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="smooth-transition bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white px-8 py-3 rounded-xl font-medium flex items-center"
+            id="trailer">
+            <i class="fas fa-play-circle mr-3 text-xl"></i>
+            Watch Trailer
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Loading & Error States -->
+    <div id="loading" class="hidden mt-12 text-center">
+      <div class="inline-block loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-16 w-16"></div>
+      <p class="mt-4 text-pink-500 text-xl">Searching our anime database...</p>
+    </div>
+
+    <div id="noResults" class="hidden no-results mt-12 fade-in">
+      <i class="fas fa-dragon text-5xl text-pink-500 mb-4"></i>
+      <h3 class="text-2xl font-abril text-white mb-2">No Anime Found</h3>
+      <p class="text-gray-300 max-w-md mx-auto">We couldn't find any anime matching your search. Try a different title
+        or check your spelling.</p>
+    </div>
+
+    <!-- Popular Anime -->
+    <div class="mt-12">
+      <h2 class="font-abril text-2xl text-pink-500 mb-4">Popular Anime</h2>
+      <div class="flex flex-wrap gap-4">
+        <button
+          class="search-suggestion bg-[#2a2749] hover:bg-[#3a3769] text-gray-300 px-4 py-2 rounded-xl transition-all duration-300">Attack on Titan</button>
+        <button
+          class="search-suggestion bg-[#2a2749] hover:bg-[#3a3769] text-gray-300 px-4 py-2 rounded-xl transition-all duration-300">Naruto</button>
+        <button
+          class="search-suggestion bg-[#2a2749] hover:bg-[#3a3769] text-gray-300 px-4 py-2 rounded-xl transition-all duration-300">One Piece</button>
+        <button
+          class="search-suggestion bg-[#2a2749] hover:bg-[#3a3769] text-gray-300 px-4 py-2 rounded-xl transition-all duration-300">Death Note</button>
+        <button
+          class="search-suggestion bg-[#2a2749] hover:bg-[#3a3769] text-gray-300 px-4 py-2 rounded-xl transition-all duration-300">Fullmetal Alchemist</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const titleInput = document.getElementById('title');
+      const searchBtn = document.getElementById('search');
+      const animeContainer = document.getElementById('animeContainer');
+      const loading = document.getElementById('loading');
+      const noResults = document.getElementById('noResults');
+
+      // Elements to update
+      const animename = document.getElementById('animename');
+      const year = document.getElementById('year');
+      const duration = document.getElementById('duration');
+      const episodes = document.getElementById('episodes');
+      const genre = document.getElementById('genre');
+      const desc = document.getElementById('desc');
+      const score = document.getElementById('score');
+      const scoreCircle = document.getElementById('scoreCircle');
+      const rankCircle = document.getElementById('rankCircle');
+      const statusEl = document.getElementById('status');
+      const director = document.getElementById('director');
+      const studio = document.getElementById('studio');
+      const imageContainer = document.getElementById('imageContainer');
+      const trailerBtn = document.getElementById('trailer');
+      const posterTitle = document.getElementById('posterTitle');
+
+      // API token and config
+      const apiToken = 'e0f10008afmsh40e0b7e88e503fbp1ac928jsnf7fd289875fb';
+      const apiHost = 'anime-db.p.rapidapi.com';
+      
+      // Search function
+      searchBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const title = titleInput.value.trim();
+        if (title) {
+          searchAnime(title);
+        } else {
+          alert("Please enter an anime title");
+        }
+      });
+      
+      // Search for anime
+      function searchAnime(title) {
+        // Show loading state
+        animeContainer.classList.add('hidden');
+        noResults.classList.add('hidden');
+        loading.classList.remove('hidden');
+        
+        const xhr = new XMLHttpRequest();
+        const url = `https://${apiHost}/anime?page=1&size=1&search=${encodeURIComponent(title)}`;
+        
+        xhr.open('GET', url);
+        xhr.setRequestHeader('X-RapidAPI-Key', apiToken);
+        xhr.setRequestHeader('X-RapidAPI-Host', apiHost);
+        
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            loading.classList.add('hidden');
+            
+            if (xhr.status === 200) {
+              const data = JSON.parse(xhr.responseText);
+              if (data.data && data.data.length > 0) {
+                displayAnime(data.data[0]);
+                animeContainer.classList.remove('hidden');
+              } else {
+                noResults.classList.remove('hidden');
+              }
+            } else {
+              noResults.classList.remove('hidden');
+              console.error('Error:', xhr.statusText);
+            }
+          }
+        };
+        
+        xhr.send();
+      }
+      
+      // Display anime data
+      function displayAnime(anime) {
+        // Set basic info
+        animename.textContent = anime.title;
+        posterTitle.textContent = anime.title;
+        year.textContent = anime.startDate ? new Date(anime.startDate).getFullYear() : 'Unknown';
+        duration.textContent = anime.duration || 'Unknown';
+        episodes.textContent = anime.episodes ? `${anime.episodes} episodes` : 'Unknown';
+        genre.textContent = anime.genres ? anime.genres.join(', ') : 'Unknown';
+        desc.textContent = anime.synopsis || 'No synopsis available.';
+        score.textContent = anime.score ? anime.score.toFixed(1) : 'N/A';
+        scoreCircle.textContent = anime.score ? anime.score.toFixed(1) : 'N/A';
+        rankCircle.textContent = anime.ranking ? `#${anime.ranking}` : 'N/A';
+        statusEl.textContent = anime.status || 'Unknown';
+        
+        // Set director and studio
+        director.textContent = anime.directors ? anime.directors.join(', ') : 'Unknown';
+        studio.textContent = anime.studios ? anime.studios.join(', ') : 'Unknown';
+        
+        // Set poster image
+        if (anime.image) {
+          imageContainer.innerHTML = `
+            <div class="w-full h-full relative">
+              <img src="${anime.image}" alt="${anime.title}" class="w-full h-full object-cover">
+              ${anime.type ? `<span class="type-badge">${anime.type}</span>` : ''}
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 text-center">
+                <p class="text-pink-500 font-semibold">${anime.title}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          imageContainer.innerHTML = `
+            <div class="w-full h-full flex items-center justify-center relative">
+              <i class="fas fa-dragon text-5xl"></i>
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 text-center">
+                <p class="text-pink-500 font-semibold">${anime.title}</p>
+              </div>
+            </div>
+          `;
+        }
+        
+        // Set trailer button functionality
+        trailerBtn.onclick = function() {
+          const searchQuery = `${anime.title} official trailer`;
+          window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`, '_blank');
+        };
+      }
+      
+      // Popular anime suggestions
+      document.querySelectorAll('.search-suggestion').forEach(button => {
+        button.addEventListener('click', function() {
+          titleInput.value = this.textContent;
+          searchBtn.click();
+        });
+      });
+      
+      // Initial search for a popular anime
+      searchAnime('Attack on Titan');
+    });
+  </script>
+</body>
+
+</html>

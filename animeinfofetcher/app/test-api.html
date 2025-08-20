@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Movie API Test</h1>
+    <button onclick="testAPI()">Test API Call</button>
+    <div id="result"></div>
+
+    <script>
+        function testAPI() {
+            const movieTitle = 'Inception';
+            
+            // Try with your RapidAPI key first
+            const rapidApiKey = 'e0f10008afmsh40e0b7e88e503fbp1ac928jsnf7fd289875fb';
+            
+            console.log('Testing RapidAPI...');
+            
+            // Test RapidAPI endpoint
+            fetch('https://movie-database-alternative.p.rapidapi.com/?s=' + encodeURIComponent(movieTitle) + '&page=1', {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': rapidApiKey,
+                    'X-RapidAPI-Host': 'movie-database-alternative.p.rapidapi.com'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('RapidAPI Response:', data);
+                document.getElementById('result').innerHTML = '<h3>RapidAPI Response:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                console.error('RapidAPI Error:', error);
+                
+                // If RapidAPI fails, try OMDB without key (limited)
+                console.log('Testing OMDB API without key...');
+                fetch('https://www.omdbapi.com/?t=' + encodeURIComponent(movieTitle))
+                .then(response => response.json())
+                .then(data => {
+                    console.log('OMDB Response:', data);
+                    document.getElementById('result').innerHTML = '<h3>OMDB Response:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(omdbError => {
+                    console.error('OMDB Error:', omdbError);
+                    document.getElementById('result').innerHTML = '<h3>Both APIs failed</h3><p>Check console for details</p>';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
