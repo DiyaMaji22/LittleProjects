@@ -1,25 +1,23 @@
-import "dotenv/config.js"
+import "dotenv/config.js";
 import express from "express";
-import db from "./db/db.js";
-import userRoute from "./route/userroute.js"
+import { db } from "./db/db.js";
+import userRoute from "./route/userroute.js";
 
+const app = express();
 
-const app=express();
-const PORT=process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+
+//
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.json({ message: "Auth API is running!" });
+    res.json({ message: "Auth API is running!", success: true });
 });
 
-app.use("/api/user",userRoute);
+app.use("/api/user", userRoute);
 
-
-
-db().then(()=>
-{
-    app.listen(PORT,()=>{
-    console.log(`Server running on port ${PORT}`);
-})
+db().then(() => {
+  app.listen(PORT, () => {
+    console.log(`server is started ${PORT}`);
+  });
 });
-
