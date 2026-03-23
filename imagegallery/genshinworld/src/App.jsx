@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Intro from './components/Intro.jsx'
-import Venti from './components/venti.jsx'
+import CharacterGallery from './components/CharacterGallery.jsx'
 
 const App = () => {
   const navigate = useNavigate()
@@ -17,7 +17,7 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Intro />} />
-      <Route path="/characters" element={<Venti />} />
+      <Route path="/characters" element={<CharacterGallery />} />
     </Routes>
   )
 }

@@ -1,1 +1,108 @@
 @import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: sans-serif;
+  overflow: hidden;
+  margin: 0;
+}
+
+.font-cinzel { font-family: 'Cinzel', serif; }
+.font-crimson { font-family: 'Crimson Pro', serif; }
+.font-mono { font-family: monospace; }
+.font-sans { font-family: sans-serif; }
+
+/* ── ANIMATIONS ── */
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes barFill {
+  from { width: 0; }
+  to   { width: var(--bar-width); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}
+
+@keyframes particleRise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--particle-dx), -10px) rotate(45deg); 
+  }
+}
+
+/* Adjusted end position for particles to not fly off too fast */
+@keyframes bgReveal {
+  from { opacity: 0; transform: scale(1.05); }
+  to   { opacity: 0.8; transform: scale(1); }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Intro specific */
+@keyframes ballBounce {
+  0%   { transform: translateY(0px); animation-timing-function: cubic-bezier(0.33,0,0.66,0); }
+  40%  { transform: translateY(-52px); animation-timing-function: cubic-bezier(0.33,1,0.66,1); }
+  75%  { transform: translateY(0px); animation-timing-function: cubic-bezier(0.33,0,0.66,0); }
+  87%  { transform: translateY(-18px); animation-timing-function: cubic-bezier(0.33,1,0.66,1); }
+  95%  { transform: translateY(0px); animation-timing-function: cubic-bezier(0.33,0,0.66,0); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes ballSquish {
+  0%   { transform: scaleX(1)    scaleY(1);    animation-timing-function: ease-in; }
+  70%  { transform: scaleX(1)    scaleY(1);    animation-timing-function: ease-out; }
+  75%  { transform: scaleX(1.28) scaleY(0.72); animation-timing-function: cubic-bezier(0.34,1.5,0.64,1); }
+  82%  { transform: scaleX(0.9)  scaleY(1.1);  animation-timing-function: ease-out; }
+  88%  { transform: scaleX(1)    scaleY(1); }
+  92%  { transform: scaleX(1.12) scaleY(0.88); }
+  96%  { transform: scaleX(1)    scaleY(1); }
+  100% { transform: scaleX(1)    scaleY(1); }
+}
+
+@keyframes shadowSync {
+  0%   { transform: scaleX(1);    opacity: 0.3; }
+  40%  { transform: scaleX(0.45); opacity: 0.1; }
+  75%  { transform: scaleX(1);    opacity: 0.3; }
+  87%  { transform: scaleX(0.7);  opacity: 0.18; }
+  95%  { transform: scaleX(1);    opacity: 0.3; }
+  100% { transform: scaleX(1);    opacity: 0.3; }
+}
+
+@keyframes titleReveal {
+  0%   { opacity: 0; letter-spacing: 0.7em; transform: translateY(-8px); }
+  100% { opacity: 1; letter-spacing: 0.25em; transform: translateY(0); }
+}
