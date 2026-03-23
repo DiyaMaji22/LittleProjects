@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react'
 
 // ─── Import your character images here ───
 import ventiImg   from '../assets/venti.png'
+import zhongliImg from '../assets/zhongli.webp'
 // Add more: import raidenImg from '../assets/raiden.png'
 // import nahidaImg from '../assets/nahida.png'
-
+import raidenImg from '../assets/raiden.jpg'
+import nahidaImg from '../assets/nahida.jpg'
+import furinaImg from '../assets/furina.jpeg'
+import mauvikaImg from '../assets/mauvika.jpeg'
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap');
 
@@ -131,6 +135,15 @@ const css = `
     background: rgba(255,255,255,0.08);
     transform: translateY(-2px);
   }
+
+  /* Custom scrollbar hiding */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 `;
 
 // ─── CHARACTER DATABASE ───
@@ -139,8 +152,8 @@ const CHARACTERS = [
   {
     id: "venti",
     name: "Venti",
-    title: "Windborne Bard",
-    archon: "Anemo Archon · Barbatos",
+    title: "Venti · Wine-Sighted Bard",
+    archon: "Barbatos",
     region: "Mondstadt",
     vision: "Anemo",
     weapon: "Bow",
@@ -151,35 +164,204 @@ const CHARACTERS = [
     accentDim: "rgba(114,217,192,0.35)",
     accentFar: "rgba(114,217,192,0.12)",
     starColor: "#b0fff0",
-    // Background gradient — teal/deep teal for Anemo/Mondstadt
     bg: "radial-gradient(ellipse 90% 80% at 60% 40%, #041a14 0%, #021008 45%, #010806 100%)",
     overlayLeft: "linear-gradient(to right, rgba(2,8,6,0.96) 0%, rgba(2,8,6,0.75) 40%, rgba(2,8,6,0.25) 65%, transparent 100%)",
     overlayBottom: "linear-gradient(to top, rgba(2,8,6,0.9) 0%, rgba(2,8,6,0.35) 30%, transparent 65%)",
     particleColor: "rgba(114,217,192,0.75)",
-    particleSymbols: ["♪","♫","✦","♬","◆"],
-    quote: "\"Freedom is the wind — you cannot grasp it, only feel it pass through you.\"",
-    lore: "The carefree bard who wanders Mondstadt is secretly Barbatos, the Anemo Archon. He helped the people of Mondstadt overthrow a tyrant god 2,600 years ago and asked for nothing in return — only freedom. He now spends his days drinking wine, composing ballads, and watching over his beloved city.",
+    particleSymbols: ["♪", "♫", "✦", "♬", "◆"],
+    quote: "\"Come on, Traveler, let's go! The world is full of songs we haven't heard yet.\"",
+    lore: "A carefree, wine-loving bard who wanders the streets of Mondstadt. He is actually the mortal vessel of Barbatos, the Anemo Archon. 2,600 years ago, he led the revolution that freed Mondstadt from the tyrant Decarabian, establishing a land where 'freedom' is the only law.",
     stats: [
-      { label: "ATK",    val: 78, color: "#8aeedc" },
-      { label: "EM",     val: 90, color: "#72d9c0" },
-      { label: "BURST",  val: 97, color: "#50b09a" },
-      { label: "SKILL",  val: 99, color: "#b0fff0" },
+        { label: "EM",    val: 95, color: "#72d9c0" },
+        { label: "ER",    val: 85, color: "#8aeedc" },
+        { label: "CC",    val: 100, color: "#50b09a" },
+        { label: "ATK",   val: 70, color: "#b0fff0" },
     ],
     abilities: [
-      { name: "Skyward Sonnet",    type: "Elemental Skill",  desc: "Summons a Wind Domain that launches enemies and objects skyward." },
-      { name: "Wind's Grand Ode",  type: "Elemental Burst",  desc: "Fires an Ode to the Wind that pulls in and damages enemies in a large AoE." },
-      { name: "Stormeye",          type: "Passive",          desc: "Generates 15 Energy for the team when Venti's Elemental Burst is used." },
+        { name: "Skyward Sonnet", type: "Elemental Skill", desc: "Summons a Wind Domain at the enemy's location that deals AoE Anemo DMG and launches them into the air. Holding the skill summons a larger domain around Venti and creates an upcurrent for gliding." },
+        { name: "Wind's Grand Ode", type: "Elemental Burst", desc: "Fires an arrow that creates a massive Stormeye. It sucks in nearby objects and enemies, dealing continuous Anemo DMG. If it comes into contact with Hydro/Pyro/Cryo/Electro, it deals additional Elemental DMG of that type." },
+        { name: "Stormeye", type: "Passive", desc: "Regenerates 15 Energy to Venti after the effects of Wind's Grand Ode end. If an Elemental Absorption occurred, it also restores 15 Energy to all party members of that absorbed element." },
     ],
-    tags: ["Crowd Control", "Sub-DPS", "Support", "EM Build"],
-  },
-  // ─── ADD MORE CHARACTERS HERE ───
-  // {
-  //   id: "raiden",
-  //   name: "Raiden Shogun",
-  //   img: raidenImg,
-  //   accent: "#b06aff",
-  //   ... (copy pattern above)
-  // },
+    tags: ["Crowd Control", "Battery", "Anemo Enabler", "Exploration"],
+},
+  {
+    id: "zhongli",
+    name: "Zhongli",
+    title: "Zhongli · Vago Mundo",
+    archon: "Morax",
+    region: "Liyue",
+    vision: "Geo",
+    weapon: "Polearm",
+    rarity: 5,
+    constellation: "Lapis Dei",
+    img: zhongliImg,
+    accent: "#E2AD5C",
+    accentDim: "rgba(226,173,92,0.35)",
+    accentFar: "rgba(226,173,92,0.12)",
+    starColor: "#FFE699",
+    bg: "radial-gradient(ellipse 90% 80% at 60% 40%, #1a150b 0%, #100c06 45%, #080603 100%)",
+    overlayLeft: "linear-gradient(to right, rgba(12,10,6,0.96) 0%, rgba(12,10,6,0.75) 40%, rgba(12,10,6,0.25) 65%, transparent 100%)",
+    overlayBottom: "linear-gradient(to top, rgba(12,10,6,0.9) 0%, rgba(12,10,6,0.35) 30%, transparent 65%)",
+    particleColor: "rgba(226,173,92,0.75)",
+    particleSymbols: ["🔶", "◇", "⟡", "✦", "▪"],
+    quote: "\"Osmanthus wine tastes the same as I remember... but where are those who share the memory?\"",
+    lore: "The consultant of the Wangsheng Funeral Parlor who is actually the vessel for the Geo Archon, Morax. Having reigned over Liyue for millennia as the God of Contracts, he staged his own 'death' to test if his city was ready to move into the age of mortals.",
+    stats: [
+        { label: "HP",    val: 100, color: "#E2AD5C" },
+        { label: "ATK",   val: 60, color: "#D19B4C" },
+        { label: "DEF",   val: 85, color: "#BF8A3D" },
+        { label: "SHIELD", val: 99, color: "#E2AD5C" },
+    ],
+    abilities: [
+        { name: "Dominus Lapidis", type: "Elemental Skill", desc: "Creates a Jade Shield that possesses 150% DMG Absorption against all Elemental and Physical DMG. Additionally, characters protected by the shield decrease the Elemental and Physical RES of opponents in a small AoE by 20%." },
+        { name: "Planet Befall", type: "Elemental Burst", desc: "Summons a falling meteor that deals massive Geo DMG to opponents caught in its AoE and applies the Petrification status to them, rendering them unable to move." },
+        { name: "Dominance of Earth", type: "Passive", desc: "Zhongli deals bonus DMG based on his Max HP, including his Normal Attacks, Stone Stele resonance, and Planet Befall DMG." },
+    ],
+    tags: ["Shielder", "Universal Shred", "CC", "Geo Construct"],
+},
+  {
+    id: "raiden",
+    name: "Raiden Shogun",
+    title: "Raiden Shogun · Plane of Euthymia",
+    archon: "Beelzebul", 
+    region: "Inazuma",
+    vision: "Electro",
+    weapon: "Polearm",
+    rarity: 5,
+    constellation: "Imperatrix Umbrosa",
+    img: raidenImg,
+    accent: "#b06aff",
+    accentDim: "rgba(176,106,255,0.35)",
+    accentFar: "rgba(176,106,255,0.12)",
+    starColor: "#e0a0ff",
+    bg: "radial-gradient(ellipse 90% 80% at 60% 40%, #1e0f2c 0%, #12081a 45%, #080409 100%)",
+    overlayLeft: "linear-gradient(to right, rgba(24,12,9,0.96) 0%, rgba(24,12,9,0.75) 40%, rgba(24,12,9,0.25) 65%, transparent 100%)",
+    overlayBottom: "linear-gradient(to top, rgba(24,12,9,0.9) 0%, rgba(24,12,9,0.35) 30%, transparent 65%)",
+    particleColor: "rgba(176,106,255,0.75)",
+    particleSymbols: ["⚡", "✦", "◆", "⟡", "▪"],
+    quote: "\"Inactivity serves no purpose whatsoever. Hmph. Tell me, what is it you wish to do?\"",
+    lore: "The Almighty Shogun, the undisputed ruler of Inazuma. While the puppet Shogun governs the nation, the true Electro Archon, Ei (Beelzebul), meditates within the Plane of Euthymia. Seeking to preserve an 'Eternity' that never changes, she once isolated her nation from the world.",
+    stats: [
+        { label: "HP",    val: 80, color: "#b06aff" },
+        { label: "ATK",   val: 85, color: "#b06aff" },
+        { label: "ER",    val: 150, color: "#b06aff" },
+        { label: "CRIT",  val: 60, color: "#b06aff" },
+    ],
+    abilities: [
+        { name: "Transcendence: Baleful Omen", type: "Elemental Skill", desc: "Unveils the Eye of Stormy Judgment, dealing Electro DMG and performing coordinated attacks. It also increases the Elemental Burst DMG of all party members based on their Burst's Energy cost." },
+        { name: "Secret Art: Musou Shinsetsu", type: "Elemental Burst", desc: "Unleashes the Musou no Hitotachi, dealing massive AoE Electro DMG and entering the Musou Isshin state. While in this state, Raiden uses her Tachi and regenerates Energy for all nearby party members when she hits enemies." },
+        { name: "Enlightened One", type: "Passive", desc: "Each 1% above 100% Energy Recharge that the Raiden Shogun possesses grants her 0.6% greater Energy restoration from Musou Isshin and 0.4% Electro DMG Bonus." },
+    ],
+    tags: ["Burst DPS", "Battery", "Electro Enabler", "Buffer"],
+},
+  {
+    id: "nahida",
+    name: "Nahida",
+    title: "Nahida · Physic of Purity",
+    archon: "Buer",
+    region: "Sumeru",
+    vision: "Dendro",
+    weapon: "Catalyst",
+    rarity: 5,
+    constellation: "Sapientia Oromasdis",
+    img: nahidaImg,
+    accent: "#7acb5a",
+    accentDim: "rgba(122,203,90,0.35)",
+    accentFar: "rgba(122,203,90,0.12)",
+    starColor: "#a0e6a8",
+    bg: "radial-gradient(ellipse 90% 80% at 60% 40%, #12210c 0%, #0a1306 45%, #050903 100%)",
+    overlayLeft: "linear-gradient(to right, rgba(18,33,12,0.96) 0%, rgba(18,33,12,0.75) 40%, rgba(18,33,12,0.25) 65%, transparent 100%)",
+    overlayBottom: "linear-gradient(to top, rgba(18,33,12,0.9) 0%, rgba(18,33,12,0.35) 30%, transparent 65%)",
+    particleColor: "rgba(122,203,90,0.75)",
+    particleSymbols: ["🌿", "✦", "◆", "⟡", "▪"],
+    quote: "\"The world is but a dream, and I am the one who must wake it.\"",
+    lore: "Known as Lesser Lord Kusanali and the avatar of Irminsul, Nahida is the Dendro Archon (Buer). After being confined in the Sanctuary of Surasthana for centuries, she was freed by the Traveler. She now guides Sumeru with her vast wisdom, acting as the moon that reflects the sun's light.",
+    stats: [
+        { label: "HP",    val: 70, color: "#7acb5a" },
+        { label: "ATK",   val: 65, color: "#7acb5a" },
+        { label: "EM",    val: 150, color: "#7acb5a" },
+        { label: "CRIT",  val: 80, color: "#7acb5a" },
+    ],
+    abilities: [
+        { name: "All Schemes to Know", type: "Elemental Skill", desc: "Enters an aiming mode to mark enemies with the Seed of Skandha. Marked enemies are linked; triggering Elemental Reactions on them deals Tri-Karma Purification Dendro DMG based on Nahida's ATK and EM." },
+        { name: "Illusory Heart", type: "Elemental Burst", desc: "Manifests the Shrine of Maya. Depending on the Elements present in the party (Pyro, Electro, Hydro), provides various buffs to the Tri-Karma Purification effects while within the field." },
+        { name: "Compassion Illuminated", type: "Passive", desc: "When unleashing Illusory Heart, the Shrine of Maya will increase the active character's Elemental Mastery by 25% of the EM of the party member with the highest EM (up to 250 EM)." },
+    ],
+    tags: ["Sub-DPS", "Dendro Application", "EM Buffer", "Enabler"],
+},
+  {
+    id: "furina",
+    name: "Furina",
+    title: "Furina · Soloist of Solitary Eternity",
+    archon: "Focalors",
+    region: "Fontaine",
+    vision: "Hydro",
+    weapon: "Sword",
+    rarity: 5,
+    constellation: "Animula Choragi",
+    img: furinaImg,
+    accent: "#4fa0ff",
+    accentDim: "rgba(79,160,255,0.35)",
+    accentFar: "rgba(79,160,255,0.12)",
+    starColor: "#a0d4ff",
+    bg: "radial-gradient(ellipse 90% 80% at 60% 40%, #0b1a2c 0%, #050d16 45%, #020608 100%)",
+    overlayLeft: "linear-gradient(to right, rgba(11,26,44,0.96) 0%, rgba(11,26,44,0.75) 40%, rgba(11,26,44,0.25) 65%, transparent 100%)",
+    overlayBottom: "linear-gradient(to top, rgba(11,26,44,0.9) 0%, rgba(11,26,44,0.35) 30%, transparent 65%)",
+    particleColor: "rgba(79,160,255,0.75)",
+    particleSymbols: ["💧", "✦", "◆", "⟡", "▪"],
+    quote: "\"The world is but a stage, and I shall be its most dazzling star!\"",
+    lore: "The former Hydro Archon who spent 500 years playing a part to save Fontaine from a prophecy of ruin. Now a celebrated performer, Furina has regained her freedom and lives as a human, though she still commands the power of the tides through her vision and the memories of Focalors.",
+    stats: [
+        { label: "HP",    val: 95, color: "#4fa0ff" },
+        { label: "ATK",   val: 65, color: "#4fa0ff" },
+        { label: "ER",    val: 85, color: "#4fa0ff" },
+        { label: "CRIT",  val: 70, color: "#4fa0ff" },
+    ],
+    abilities: [
+        { name: "Salon Solitaire", type: "Elemental Skill", desc: "Invites the Salon Members (Ousia) to attack enemies and drain party HP, or the Singer of Many Waters (Pneuma) to heal the active character." },
+        { name: "Let the People Rejoice", type: "Elemental Burst", desc: "Creates a stage of foam that causes the party to enter the Universal Revelry state, granting DMG bonuses based on HP changes (Fanfare)." },
+        { name: "Endless Waltz", type: "Passive", desc: "When the active character receives healing from a source other than Furina and is already at full HP, Furina will heal nearby party members over time." },
+    ],
+    tags: ["Support", "Off-field DPS", "Buff", "Healer"],
+},
+  
+    {
+    id: "mavuika",
+    name: "Mavuika",
+    title: "Mavuika · Kiongozi",
+    archon: "Haborym",
+    region: "Natlan",
+    vision: "Pyro",
+    weapon: "Claymore",
+    rarity: 5,
+    constellation: "Ignis Dea",
+    img: mauvikaImg, // Make sure to update your variable name if it was mauvikaImg
+    accent: "#ff6a6a",
+    accentDim: "rgba(255,106,106,0.35)",
+    accentFar: "rgba(255,106,106,0.12)",
+    starColor: "#ffb0b0",
+    bg: "radial-gradient(ellipse 90% 80% at 60% 40%, #2c0b0b 0%, #160505 45%, #080202 100%)",
+    overlayLeft: "linear-gradient(to right, rgba(44,11,11,0.96) 0%, rgba(44,11,11,0.75) 40%, rgba(44,11,11,0.25) 65%, transparent 100%)",
+    overlayBottom: "linear-gradient(to top, rgba(44,11,11,0.9) 0%, rgba(44,11,11,0.35) 30%, transparent 65%)",
+    particleColor: "rgba(255,106,106,0.75)",
+    particleSymbols: ["🔥", "✦", "◆", "⟡", "▪"],
+    quote: "\"A warrior should always feel fortunate to meet their match on the battlefield.\"",
+    lore: "Mavuika is the current Pyro Archon of Natlan, governing under the divine name Haborym. Originally a human who claimed the Archon's seat through a martial tournament, she sacrificed her life 500 years ago to the Sacred Flame to save Natlan from the Abyss, resurrecting in the present era to lead her people to victory.",
+    stats: [
+        { label: "HP",    val: 92, color: "#ff6a6a" },
+        { label: "ATK",   val: 95, color: "#ff6a6a" },
+        { label: "CRIT",  val: 80, color: "#ff6a6a" },
+        { label: "ER",    val: 75, color: "#ff6a6a" },
+    ],
+    abilities: [
+        { name: "The Named Moment", type: "Elemental Skill", desc: "Summons a Flamestrider and Ring of Searing Radiance, dealing Nightsoul-aligned AoE Pyro DMG and performing coordinated attacks alongside the active character." },
+        { name: "Hour of Burning Skies", type: "Elemental Burst", desc: "Consumes accumulated Fighting Spirit to unleash a devastating Sunfell Slice from her Flamestrider, dealing massive Nightsoul-aligned AoE Pyro DMG." },
+        { name: "Gift of Flaming Flowers", type: "Passive", desc: "When a nearby party member triggers a Nightsoul Burst, Mavuika's ATK increases by 30% for 10s." },
+    ],
+    tags: ["Main DPS", "Sub-DPS", "Pyro Application", "Nightsoul"],
+
+
+  }
 ];
 
 // ─── Stars ───
@@ -448,21 +630,24 @@ const Venti = () => {
         {}
         <div
           key={contentKey}
+          className="no-scrollbar"
           style={{
             position:"absolute", left:0, top:0, bottom:0,
             width:"clamp(330px,44%,520px)",
-            display:"flex", flexDirection:"column", justifyContent:"center",
-            padding:"100px 44px 100px",
+            display:"flex", flexDirection:"column", justifyContent:"flex-start",
+            padding:"60px 44px 100px",
             zIndex:10,
             opacity: animating ? 0 : 1,
             transform: animating
               ? `translateX(${dir === "right" ? "-24px" : "24px"})`
               : "translateX(0)",
             transition:"opacity 0.32s ease, transform 0.32s ease",
+            overflowY: "auto",
+            maxHeight: "100vh",
           }}
         >
           {/* Region + Vision badges */}
-          <div style={{ display:"flex", gap:8, marginBottom:18, flexWrap:"wrap" }}>
+          <div style={{ display:"flex", gap:8, marginBottom:4, flexWrap:"wrap" }}>
             <div style={{
               padding:"4px 14px",
               border:`1px solid ${char.accent}66`,
@@ -492,20 +677,22 @@ const Venti = () => {
           </div>
 
           {/* Name with Navigation */}
-          <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 4, animation: "fadeSlideUp 0.55s ease both 0.15s", opacity: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, animation: "fadeSlideUp 0.55s ease both 0.15s", opacity: 0 }}>
             <button
                onClick={prev}
                style={{
-                 width: 40, height: 40, borderRadius: "50%",
+                 minWidth: 40, width: 40, height: 40, borderRadius: "50%",
                  border: `1px solid ${char.accent}`,
                  background: "rgba(0,0,0,0.2)",
                  color: char.accent, fontSize: "1.2rem",
                  display: "flex", alignItems: "center", justifyContent: "center",
                  cursor: "pointer", transition: "all 0.2s",
-                 boxShadow: `0 0 10px ${char.accent}33`
+                 boxShadow: `0 0 10px ${char.accent}33`,
+                 flexShrink: 0,
                }}
                onMouseEnter={e => { e.currentTarget.style.background = `${char.accent}22`; e.currentTarget.style.transform = "scale(1.1)"; }}
                onMouseLeave={e => { e.currentTarget.style.background = "rgba(0,0,0,0.2)"; e.currentTarget.style.transform = "scale(1)"; }}
+               title="Previous Character"
             >❮</button>
 
             <h1 className="cinzel" style={{
@@ -513,6 +700,7 @@ const Venti = () => {
               fontWeight:900, lineHeight:1.0, color:"#fff",
               textShadow:`0 0 30px ${char.accent}66, 0 0 60px ${char.accent}33`,
               margin: 0,
+              textAlign: "center",
             }}>
               {char.name}
             </h1>
@@ -520,16 +708,18 @@ const Venti = () => {
             <button
                onClick={next}
                style={{
-                 width: 40, height: 40, borderRadius: "50%",
+                 minWidth: 40, width: 40, height: 40, borderRadius: "50%",
                  border: `1px solid ${char.accent}`,
                  background: "rgba(0,0,0,0.2)",
                  color: char.accent, fontSize: "1.2rem",
                  display: "flex", alignItems: "center", justifyContent: "center",
                  cursor: "pointer", transition: "all 0.2s",
-                 boxShadow: `0 0 10px ${char.accent}33`
+                 boxShadow: `0 0 10px ${char.accent}33`,
+                 flexShrink: 0,
                }}
                onMouseEnter={e => { e.currentTarget.style.background = `${char.accent}22`; e.currentTarget.style.transform = "scale(1.1)"; }}
                onMouseLeave={e => { e.currentTarget.style.background = "rgba(0,0,0,0.2)"; e.currentTarget.style.transform = "scale(1)"; }}
+               title="Next Character"
             >❯</button>
           </div>
 
