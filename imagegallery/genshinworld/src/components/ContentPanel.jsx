@@ -114,4 +114,4 @@ export function ContentPanel({ char, contentKey }) {
       </div>
     </div>
   )
-}
+ }

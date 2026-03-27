@@ -309,7 +309,7 @@ export default function Intro() {
               {/* ↑ Squish layer — scales X/Y on bounce */}
               <div className="squish-layer">
                 <Link
-                  to="/characters"
+                  to="/hub"
                   onMouseEnter={() => setHovered(true)}
                   onMouseLeave={() => setHovered(false)}
                   style={{

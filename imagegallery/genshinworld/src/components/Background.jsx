@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 
 // ── Constants ─────────────────────────────────────────────────
 const STAR_COUNT    = 65
-const PARTICLE_COUNT = 45
+const PARTICLE_COUNT = 55
 
 // Stars are stable — generated once at module load, never re-computed.
 const STARS = Array.from({ length: STAR_COUNT }, (_, i) => ({
