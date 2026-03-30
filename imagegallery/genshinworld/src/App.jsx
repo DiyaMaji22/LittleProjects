@@ -4,7 +4,7 @@ import Intro from './components/Intro.jsx'
 import CharacterGallery from './components/CharacterGallery.jsx'
 import PaimonHub from './components/UI/PaimonHub.jsx'
 import RegionsPage from './components/Regions/Region.jsx'
-import ElementsPage from './components/ElementsandReaction/Elements.jsx'
+import ElementsPage from './components/Elements.jsx'
 
 const App = () => {
   const navigate = useNavigate()
