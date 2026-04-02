@@ -47,9 +47,9 @@ const FACTIONS = [
     tags: ['Harbingers','Snezhnaya','Gnosis-hunters','Delusions','Tsaritsa'],
     entries: [
       { h: 'Origin & purpose',        b: "Created by the Cryo Archon Tsaritsa to collect all seven Gnoses. They masquerade as diplomats but operate as intelligence agents and soldiers across every nation in Teyvat." },
-      { h: 'The Eleven Harbingers',   b: "Twelve chosen warriors ranked by Roman numerals, each bearing a unique title and power. Childe (Tartaglia), Scaramouche, and La Signora are among the most prominent. They answer only to the Tsaritsa herself." },
-      { h: 'Delusion users',          b: "Unlike Vision holders, some Fatui agents wield Delusions — artificial Vision-like devices that grant elemental power at a terrible cost to the user's body and mind, slowly consuming them from within." },
-      { h: 'True goal',               b: "The Tsaritsa's ambitions extend far beyond collecting power: she seeks to wage war on Celestia itself, dismantling the 'Script' — the predetermined fate imposed on all of Teyvat by the Sustainer of Heavenly Principles." },
+      { h: 'The Eleven Harbingers',   b: "Eleven chosen warriors ranked by power, each bearing a unique title from the Commedia dell'arte. Childe (Tartaglia), Arlecchino, and Dottore are among the most active. They answer only to the Tsaritsa." },
+      { h: 'Delusion users',          b: "Unlike Vision holders, some Fatui agents wield Delusions — artificial devices that grant elemental power at a terrible cost to the user's life force, slowly consuming them from within." },
+      { h: 'True goal',               b: "The Tsaritsa seeks to wage war on Celestia itself, aiming to dismantle the 'Script' — the predetermined fate imposed on Teyvat by the Sustainer of Heavenly Principles." },
     ],
   },
   {
@@ -84,12 +84,12 @@ const FACTIONS = [
     alignStyle: { bg: 'rgba(180,130,30,.1)', border: 'rgba(180,130,30,.28)', color: '#c09048' },
     threat: 40,
     desc: "Eight ancient witches of extraordinary power, operating outside all national authority. Their motives remain inscrutable even to the Archons themselves.",
-    tags: ['Alice','Egeria','Ancient magic','Eight members','Mondstadt-linked'],
+    tags: ['Alice','Rhinedottir','Ancient magic','Eight members','Nicole'],
     entries: [
-      { h: 'Membership',            b: "Eight witches, each identified by a flower sigil. Alice — Klee's adventurer mother — is the most visible. Others include the former Hydro Archon Egeria (now deceased) and the Ice Witch Imunlaukr." },
-      { h: 'History with Archons',  b: "The Hexenzirkel was once close with the Archons, shaping significant parts of Teyvat's history. They are ancient enough to remember Khaenri'ah before its fall — and perhaps before the Archon War itself." },
-      { h: 'Their current work',    b: "They study ancient and forbidden magic independently, with no loyalty to Celestia, the Abyss, or any nation. Their actions are helpful in some instances and completely baffling in others." },
-      { h: 'Why they matter',       b: "They represent a true third power: neither Celestia's rigid order nor the Abyss's hunger. Their knowledge of pre-Archon secrets may prove crucial to the Traveler's ultimate journey." },
+      { h: 'Membership',            b: "Eight witches (the 'Mages Tea Party'), each identified by a code letter. Alice (A) is the most visible. Others include Rhinedottir (R), the creator of Albedo, and Barbeloth (B), Mona's master." },
+      { h: 'History with Archons',  b: "The Hexenzirkel once challenged the Anemo Archon Barbatos, but the conflict ended in a peaceful tea party agreement. They are ancient enough to remember Khaenri'ah before its fall." },
+      { h: 'Their current work',    b: "They study forbidden magic independently, with no loyalty to Celestia or the Abyss. Their actions include maintaining the 'boundaries' of the world and observing the 'fated' paths of Teyvat." },
+      { h: 'Why they matter',       b: "They represent a third power: neither Celestia's rigid order nor the Abyss's hunger. Their knowledge of pre-Archon secrets and 'Gold's' creations are vital to the world's survival." },
     ],
   },
   {
@@ -107,9 +107,9 @@ const FACTIONS = [
     tags: ['Sumeru','Nahida','Irminsul','Darshans','Grand Sage (former)'],
     entries: [
       { h: 'Structure & purpose',        b: "The Akademiya oversees all scholarly activity in Sumeru, divided into six Darshans. It controls access to Irminsul — the great tree that stores the collective memory of all Teyvat." },
-      { h: 'The corruption of Azar',     b: "Grand Sage Azar suppressed Nahida for five hundred years, keeping her isolated in her Sanctuary of Surasthana, collaborating with Scholars of Forbidden Knowledge to maintain control." },
-      { h: "After the Traveler's intervention", b: "Nahida is now acknowledged as Lesser Lord Kusanali and guides the Akademiya directly. Azar's faction was dismantled and the institution has reopened toward broader, freer scholarship." },
-      { h: 'Irminsul & forbidden knowledge',    b: "Editing Irminsul changes what people remember — a power that was exploited by the Akademiya's corrupt wing and nearly led to catastrophic, irreversible consequences for all of Teyvat." },
+      { h: 'The corruption of Azar',     b: "Grand Sage Azar suppressed Nahida for five hundred years, keeping her isolated in her Sanctuary of Surasthana, collaborating with the Fatui to create a synthetic god." },
+      { h: "After the Traveler's intervention", b: "Nahida is now acknowledged as Lesser Lord Kusanali and guides the Akademiya directly. The institution has reopened toward broader scholarship and empathetic leadership." },
+      { h: 'Irminsul & forbidden knowledge',    b: "Editing Irminsul changes what people remember — a power that was exploited by the Akademiya's former wing and nearly led to catastrophic consequences for Teyvat's history." },
     ],
   },
   {
@@ -126,10 +126,10 @@ const FACTIONS = [
     desc: "Three intertwined powers that protect Liyue in the wake of Morax's departure: the merchant Qixing, the maritime Crux fleet, and the ancient Adepti who once served Rex Lapis.",
     tags: ['Qixing','Crux Fleet','Adepti','Rex Lapis','Xiao','Beidou'],
     entries: [
-      { h: 'The Qixing',       b: "Seven merchant lords governing Liyue Harbour's trade and policy. After Rex Lapis staged his death, the Qixing took direct control — a deliberate test of whether humanity could govern without divine oversight." },
-      { h: 'The Crux Fleet',   b: "Liyue's independent sea militia led by Captain Beidou. While officially neutral, the Crux acts in defence of Liyue's interests and was integral in fighting back the ancient sea god Osial during his awakening." },
-      { h: 'The Adepti',       b: "Ancient beings who made a binding contract with Rex Lapis millennia ago to protect Liyue. Cloud Retainer, Moon Carver, and Mountain Shaper are among the oldest. Xiao is a yaksha bound by karmic debt and eternal trauma." },
-      { h: "Zhongli's legacy", b: "By willingly giving his Gnosis to the Tsaritsa, Morax forced Liyue to mature on its own terms. He believed its people were strong enough to protect themselves without a god — and the nation has proven him right." },
+      { h: 'The Qixing',       b: "Seven merchant lords governing Liyue Harbour's trade and policy. After Rex Lapis staged his death, the Qixing took direct control — a test of whether humanity could govern without divine oversight." },
+      { h: 'The Crux Fleet',   b: "Liyue's independent sea militia led by Captain Beidou. While officially neutral, the Crux acts in defence of Liyue's interests and was integral in fighting back the sea god Osial." },
+      { h: 'The Adepti',       b: "Ancient beings who made a binding contract with Rex Lapis millennia ago to protect Liyue. Cloud Retainer and Mountain Shaper are among the oldest. Xiao is a yaksha bound by karmic debt." },
+      { h: "Zhongli's legacy", b: "By willingly giving his Gnosis to the Tsaritsa, Morax forced Liyue to mature on its own terms. He believed its people were strong enough to protect themselves without a god." },
     ],
   },
   {
@@ -146,10 +146,10 @@ const FACTIONS = [
     desc: "A continent-spanning guild connecting explorers, monster hunters, and wanderers across every nation. The Traveler's closest institutional ally — and Paimon's favourite source of mora.",
     tags: ['Katheryne','Commissions','Mondstadt','Outlander rank','Paimon'],
     entries: [
-      { h: 'What they do',          b: "The Adventurers' Guild posts commissions — contracts for monster hunting, exploration, resource collection, and rescue. It operates in every nation, staffed by Katheryne receptionists who are... uncannily identical." },
-      { h: "The Traveler's rank",   b: "The Traveler holds the exceptional designation of Outlander, given to those of extraordinary circumstance. Their rank advanced rapidly, eventually surpassing categories the Guild's records had never needed to use before." },
-      { h: "Paimon's role",         b: "Paimon acts as the Traveler's guide, navigator, and emergency translator. Her knowledge of Teyvat's geography, political structures, and food establishments is encyclopaedic. Her chaotic honesty makes her irreplaceable." },
-      { h: 'Political neutrality',  b: "The Guild maintains strict neutrality across national borders. This makes it uniquely positioned to coordinate responses to continent-wide threats — like the Abyss Order — without triggering fragile diplomatic tensions." },
+      { h: 'What they do',          b: "The Adventurers' Guild posts commissions — contracts for monster hunting, exploration, and rescue. It operates in every nation, staffed by Katheryne receptionists who appear identical everywhere." },
+      { h: "The Traveler's rank",   b: "The Traveler holds the exceptional designation of Outlander, given to those of extraordinary circumstance. Their rank advanced rapidly, eventually surpassing standard Guild records." },
+      { h: "Paimon's role",         b: "Paimon acts as the Traveler's guide, navigator, and emergency translator. Her knowledge of Teyvat's geography and food establishments is encyclopaedic and essential." },
+      { h: 'Political neutrality',  b: "The Guild maintains strict neutrality across national borders. This makes it uniquely positioned to coordinate responses to continent-wide threats without triggering diplomatic tensions." },
     ],
   },
 ]
