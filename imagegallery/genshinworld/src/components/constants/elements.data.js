@@ -1,3 +1,11 @@
+
+import pyrobg from '../../assets/pyro.png'
+import hydrobg from '../../assets/hydro.png'
+import anemobg from '../../assets/anemo.png'
+import electrobg from '../../assets/electro.png'
+import dendrobg from '../../assets/dendro.png'
+import cryobg from '../../assets/cryo.png'
+import geobg from '../../assets/geo.png'
 export const ELEMENTS = [
   {
     id: 'pyro',
@@ -9,7 +17,7 @@ export const ELEMENTS = [
     glow: 'rgba(255,107,53,0.4)',
     bg: 'linear-gradient(145deg,#1a0800,#2a0e00,#0d0300)',
     symbol: '🔥',
-    sigil: '▲',
+    sigil: pyrobg,
     keywords: ['Fire', 'Passion', 'Destruction', 'Sacred Flame'],
     desc: "The element of burning ambition. Pyro is the most aggressive element in Teyvat — it ignites, melts, and detonates. Nations touched by Pyro burn brightest and fall hardest.",
     lore: [
@@ -28,7 +36,7 @@ export const ELEMENTS = [
     glow: 'rgba(77,184,255,0.4)',
     bg: 'linear-gradient(145deg,#00101a,#001828,#00070f)',
     symbol: '💧',
-    sigil: '◯',
+    sigil: hydrobg,
     keywords: ['Water', 'Cleansing', 'Justice', 'Memory'],
     desc: "The element of flowing truth. Hydro enables — it is the primer that makes Electro arc further, makes Pyro explode larger, makes Cryo shatter. Without Hydro, most reactions go silent.",
     lore: [
@@ -47,7 +55,7 @@ export const ELEMENTS = [
     glow: 'rgba(112,232,192,0.4)',
     bg: 'linear-gradient(145deg,#001a12,#002a1c,#000f09)',
     symbol: '🌪',
-    sigil: '~',
+    sigil: anemobg,
     keywords: ['Wind', 'Freedom', 'Song', 'Swirl'],
     desc: "The element of liberation. Anemo carries other elements across the battlefield, amplifying them and spreading their reach. Barbatos chose it as his element because wind cannot be owned.",
     lore: [
@@ -66,7 +74,7 @@ export const ELEMENTS = [
     glow: 'rgba(192,128,255,0.4)',
     bg: 'linear-gradient(145deg,#0d0020,#160030,#060010)',
     symbol: '⚡',
-    sigil: '↯',
+    sigil: electrobg,
     keywords: ['Lightning', 'Eternity', 'Superconduct', 'Quicken'],
     desc: "The element of persistence. Electro lingers — it arcs, it chains, it Superconduces away resistances. In the Dendro era, it unlocked an entirely new reaction tree that redefined team-building.",
     lore: [
@@ -85,7 +93,7 @@ export const ELEMENTS = [
     glow: 'rgba(136,216,64,0.4)',
     bg: 'linear-gradient(145deg,#041200,#081e00,#020800)',
     symbol: '🌿',
-    sigil: '⊕',
+    sigil: dendrobg,
     keywords: ['Nature', 'Wisdom', 'Growth', 'Bloom'],
     desc: "The newest element to arrive in Teyvat. Dendro rewrote the meta — its reactions are multiplicative where others are additive, and it enabled entirely new team compositions never before possible.",
     lore: [
@@ -104,7 +112,7 @@ export const ELEMENTS = [
     glow: 'rgba(168,232,255,0.4)',
     bg: 'linear-gradient(145deg,#00101e,#001828,#00060e)',
     symbol: '❄',
-    sigil: '✦',
+    sigil: cryobg,
     keywords: ['Ice', 'Preservation', 'Freeze', 'Shatter'],
     desc: "The element of crystalline preservation. Cryo freezes enemies in place, enabling free damage. Combined with Hydro, entire groups can be locked down. Combined with Electro, armor shatters.",
     lore: [
@@ -123,7 +131,7 @@ export const ELEMENTS = [
     glow: 'rgba(240,192,64,0.4)',
     bg: 'linear-gradient(145deg,#120800,#1e0e00,#080400)',
     symbol: '⛰',
-    sigil: '◈',
+    sigil: geobg,
     keywords: ['Earth', 'Contract', 'Crystallize', 'Shield'],
     desc: "The element of unbreakable foundations. Geo cannot trigger most reactions — it crystallizes. But Crystallize is unique: it creates elemental shields, turning offense into defense simultaneously.",
     lore: [

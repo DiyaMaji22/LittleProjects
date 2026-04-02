@@ -7,7 +7,7 @@ import MusicPlayer from './MusicPlayer'
 import { useCharacterNav } from '../Hooks/userCharacterNav'
 import { CHARACTERS } from '../Data/character.js'
 
-export default function CharacterGallery() {
+export default function CharacterGallery({ onBack }) {
   const { 
     activeIndex, 
     contentKey, 
@@ -40,6 +40,7 @@ export default function CharacterGallery() {
         activeIndex={activeIndex}
         char={char}
         goTo={goTo}
+        onBack={onBack}
       />
 
       {/* 3. LAYER: Content (Text, Stats, etc.) */}

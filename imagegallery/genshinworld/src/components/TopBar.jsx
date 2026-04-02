@@ -5,9 +5,9 @@
 // ─────────────────────────────────────────────────────────────
 
 /**
- * @param {{ characters, activeIndex, char, goTo }} props
+ * @param {{ characters, activeIndex, char, goTo, onBack }} props
  */
-export function TopBar({ characters, activeIndex, char, goTo }) {
+export function TopBar({ characters, activeIndex, char, goTo, onBack }) {
   return (
     <div style={{
       position:       'absolute',
@@ -19,36 +19,45 @@ export function TopBar({ characters, activeIndex, char, goTo }) {
       zIndex:         20,
     }}>
 
-      {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{
-          width:          30,
-          height:         30,
-          borderRadius:   '50%',
-          border:         `1.5px solid ${char.accent}66`,
-          background:     `${char.accent}15`,
-          display:        'flex',
-          alignItems:     'center',
-          justifyContent: 'center',
-          fontSize:       12,
-          color:          char.accent,
-          transition:     'all 0.5s',
-        }}>
-          ✦
-        </div>
-        <div>
-          <div
-            className="font-cinzel"
-            style={{ fontSize: '0.62rem', letterSpacing: '0.2em', color: char.accent, textShadow: `0 0 8px ${char.accentDim}` }}
+      {/* Left: Back Button + Text */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        {onBack && (
+          <button
+            onClick={onBack}
+            style={{
+              display:       'flex',
+              alignItems:    'center',
+              justifyContent: 'center',
+              width:         36,
+              height:        36,
+              borderRadius:  '50%',
+              border:        `1.5px solid ${char.accent}66`,
+              background:    `${char.accent}15`,
+              color:         char.accent,
+              cursor:        'pointer',
+              fontSize:      20,
+              transition:    'all 0.3s ease',
+              flexShrink:    0,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = `${char.accent}30`
+              e.currentTarget.style.borderColor = `${char.accent}cc`
+              e.currentTarget.style.boxShadow = `0 0 12px ${char.accentDim}`
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = `${char.accent}15`
+              e.currentTarget.style.borderColor = `${char.accent}66`
+              e.currentTarget.style.boxShadow = 'none'
+            }}
           >
-            GENSHIN IMPACT
-          </div>
-          <div
-            className="font-mono"
-            style={{ fontSize: '0.46rem', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.15em' }}
-          >
-            CHARACTER ARCHIVE
-          </div>
+            ←
+          </button>
+        )}
+        <div
+          className="font-cinzel"
+          style={{ fontSize: '0.62rem', letterSpacing: '0.2em', color: char.accent, textShadow: `0 0 8px ${char.accentDim}` }}
+        >
+          GENSHIN IMPACT
         </div>
       </div>
 

@@ -52,6 +52,7 @@ const PALETTES = [
   { accent:'#942828', bg:'rgba(148,40,40,.07)',   border:'rgba(148,40,40,.28)'  },
   { accent:'#1a58a0', bg:'rgba(26,88,160,.07)',   border:'rgba(26,88,160,.28)'  },
   { accent:'#2a7020', bg:'rgba(42,112,32,.07)',   border:'rgba(42,112,32,.28)'  },
+  { accent:'#c19a6b', bg:'rgba(193,154,107,.07)', border:'rgba(193,154,107,.28)' },
 ]
 
 const WORLD_SECTIONS = [
@@ -516,7 +517,7 @@ export default function PaimonHub({ onBack }) {
           padding:'18px 34px', zIndex:20,
           animation:'p-fadeIn .55s ease both',
         }}>
-          <button className="p-back" onClick={onBack}>← CHARACTER ARCHIVE</button>
+          <button className="p-back" onClick={onBack}>← BACK TO HOME</button>
           <div className="p-mono" style={{ fontSize:'.5rem', letterSpacing:'.22em', color:T.textMuted }}>
             TRAVELER'S CODEX
           </div>
@@ -639,6 +640,24 @@ export default function PaimonHub({ onBack }) {
                       navigate('/elements')
                       return
                     }
+                    if (sec.id === 'factions') {
+                      setActiveSection(null)
+                      setActivePalette(null)
+                      navigate('/factions')
+                      return
+                    }
+                    if (sec.id === 'abyss') {
+                      setActiveSection(null)
+                      setActivePalette(null)
+                      navigate('/abyss')
+                      return
+                    }
+                    if (sec.id === 'artifacts') {
+                      setActiveSection(null)
+                      setActivePalette(null)
+                      navigate('/artifacts')
+                      return
+                    }
                     setActiveSection(sec)
                     setActivePalette(pal)
                   }}
@@ -656,7 +675,7 @@ export default function PaimonHub({ onBack }) {
         )}
 
         {/* Drawer */}
-        {activeSection && activeSection.id !== 'regions' && activeSection.id !== 'archons' && activeSection.id !== 'elements' && (
+        {activeSection && activeSection.id !== 'regions' && activeSection.id !== 'archons' && activeSection.id !== 'elements' && activeSection.id !== 'factions' && activeSection.id !== 'abyss' && activeSection.id !== 'artifacts' && (
           <SectionDrawer
             section={activeSection}
             palette={activePalette}

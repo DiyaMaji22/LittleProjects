@@ -166,7 +166,7 @@ export default function Intro() {
       <div style={{
         width:"100vw", height:"100vh",
         position:"relative", overflow:"hidden",
-        background:"#05000f",
+        background:"linear-gradient(180deg, #05000f 0%, #0a0515 50%, #0f030a 100%)",
         display:"flex", flexDirection:"column",
         alignItems:"center", justifyContent:"center",
       }}>

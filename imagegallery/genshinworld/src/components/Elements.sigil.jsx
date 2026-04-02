@@ -68,20 +68,37 @@ export default function ElementSigil({ el, size = 120 }) {
         />
       ))}
 
-      {/* Central sigil character */}
-      <div
-        className="el-cormorant"
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          fontSize: size * 0.32,
-          color: el.color,
-          animation: 'el-runeGlow 3s ease-in-out infinite',
-          lineHeight: 1,
-        }}
-      >
-        {el.sigil}
-      </div>
+      {/* Central sigil character or image */}
+      {typeof el.sigil === 'string' && el.sigil.length > 2 ? (
+        // Render as image
+        <img
+          src={el.sigil}
+          alt={`${el.name} sigil`}
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            width: size * 0.6,
+            height: size * 0.6,
+            animation: 'el-runeGlow 3s ease-in-out infinite',
+            objectFit: 'contain',
+          }}
+        />
+      ) : (
+        // Render as text
+        <div
+          className="el-cormorant"
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            fontSize: size * 0.32,
+            color: el.color,
+            animation: 'el-runeGlow 3s ease-in-out infinite',
+            lineHeight: 1,
+          }}
+        >
+          {el.sigil}
+        </div>
+      )}
     </div>
   )
 }
